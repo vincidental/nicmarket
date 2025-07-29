@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOM: Charting the Next Wave of Growth</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- Font & World-Class Palette --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #F8F9FA; /* Off-white, professional */
+            --text-color: #212529; /* Dark Gray */
+            --heading-color: #121212;
+            --primary-accent: #0D6EFD; /* Strong, confident blue */
+            --highlight-accent: #D4AF37; /* Sophisticated Gold */
+            --card-bg: #FFFFFF;
+            --border-color: #DEE2E6;
+        }
+
+        /* --- Scroll Snap Feature & Base --- */
+        html {
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        /* --- Layout & Section Styling --- */
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5rem 3rem;
+            box-sizing: border-box;
+            border-bottom: 1px solid var(--border-color);
+            scroll-snap-align: start;
+            position: relative;
+        }
+        
+        .slide:last-child {
+            border-bottom: none;
+        }
+
+        .slide-content {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+        
+        h1 { font-size: 3.5rem; letter-spacing: -1.5px; }
+        h2 { font-size: 2.8rem; letter-spacing: -1px; margin-bottom: 1rem; }
+        h3 { font-size: 1.8rem; font-weight: 600; }
+        h4 { font-size: 1.2rem; font-weight: 600; color: var(--primary-accent); }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: #495057;
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+
+        .governing-thought {
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 1.5rem auto;
+            text-align: center;
+        }
+
+        .insight-box {
+            background-color: #e9f0fd;
+            border-left: 5px solid var(--primary-accent);
+            padding: 1.5rem;
+            margin: 0; /* Adjusted for infographic layout */
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .insight-box strong { font-weight: 700; }
+
+        .data-source {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        /* --- Interactive Elements & Infographics --- */
+        .infographic-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        #strategic-response-2 .chart-container {
+             max-height: 280px;
+        }
+        #strategic-response-2 .text-content {
+            display: flex;
+            align-items: center;
+        }
+
+
+        /* --- Title Slide --- */
+        #title-slide { background-color: #111827; color: var(--bg-color); }
+        #title-slide h1 { color: var(--bg-color); }
+        #title-slide .subtitle { font-size: 1.25rem; color: var(--primary-accent); margin-top: 1rem; }
+        #title-slide .meta { position: absolute; bottom: 2rem; width: 90%; max-width: 1200px; display: flex; justify-content: space-between; font-size: 0.9rem; color: #adb5bd;}
+
+        /* --- Unbundling Diagram --- */
+        .unbundling-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin-top: 2rem;
+        }
+        .bundle-item {
+            text-align: center;
+            width: 200px;
+        }
+        .bundle-item .icon { font-size: 3rem; }
+        .bundle-item h4 { margin-top: 1rem; }
+        .bundle-item p { font-size: 0.9rem; opacity: 0.8; }
+        .arrow { font-size: 2.5rem; color: var(--primary-accent); margin-top: 3rem; }
+
+        /* --- Strategic Initiative Deep Dive --- */
+        .initiative-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        .initiative-column h4 {
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        .initiative-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        .initiative-column li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 1rem;
+        }
+        .initiative-column li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-accent);
+            font-weight: 700;
+        }
+        
+        /* --- Nielsen Framework --- */
+        .nielsen-framework {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .nielsen-card {
+            background-color: var(--card-bg);
+            border-top: 5px solid var(--highlight-accent);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .nielsen-card h3 { 
+            color: var(--highlight-accent);
+            font-size: 1.5rem;
+        }
+        .nielsen-card p { margin-top: 1rem; }
+        .nielsen-card strong {
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+
+
+        /* --- Toggler for Consumer Tension --- */
+        .toggler-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .toggle-switch {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 30px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .toggle-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background: var(--primary-accent);
+            color: white;
+            box-shadow: 0 2px 10px rgba(13, 110, 253, 0.4);
+        }
+        .toggle-content {
+            display: none;
+            width: 100%;
+        }
+        .toggle-content.active {
+            display: block;
+        }
+        .content-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .content-card ul { list-style-type: none; padding: 0; }
+        .content-card li { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .content-card .pros::before { content: '✓ '; color: #198754; font-weight: 700; }
+        .content-card .cons::before { content: '✗ '; color: #DC3545; font-weight: 700; }
+
+        /* --- Matrix --- */
+        .matrix-container {
+            width: 100%;
+            height: 70vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .quadrant { border: 1px solid var(--border-color); padding: 1.5rem; position: relative; }
+        .quadrant-title { position: absolute; top: 1rem; left: 1.5rem; font-size: 1.5rem; font-weight: 600; opacity: 0.8;}
+        #q-wins .quadrant-title { color: #198754; }
+        #m-projects .quadrant-title { color: #DC3545; }
+        .axis-label { position: absolute; font-size: 0.9rem; font-weight: 300; color: #6c757d; }
+        #impact-label { top: 50%; left: -5rem; transform: translateY(-50%) rotate(-90deg); }
+        #effort-label { bottom: -3rem; left: 50%; transform: translateX(-50%); }
+        .project-dot {
+            position: absolute;
+            background: var(--primary-accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .project-dot:hover { transform: scale(1.05); box-shadow: 0 2px 10px rgba(13, 110, 253, 0.4); }
+    </style>
+</head>
+<body>
+
+    <section id="title-slide" class="slide">
+        <div class="slide-content" style="text-align: center;">
+            <h1>FOOM: Charting the Next Wave of Growth</h1>
+            <p class="subtitle">A Strategic Analysis of the Indonesian Nicotine Market</p>
+            <div class="meta">
+                <span>For: Pak Teguh, CEO</span>
+                <span>July 28, 2025</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="executive-summary" class="slide">
+        <div class="slide-content" style="text-align: center;">
+            <h2>Executive Summary: The Great Market Shift</h2>
+            <p class="governing-thought">
+                Indonesia's nicotine market is at a strategic inflection point. The cigarette industry's Rp 700 Trillion revenue pool is vulnerable to disruption from alternatives that better solve consumer jobs-to-be-done. To win, FOOM must evolve from a vape brand into a nicotine technology leader.
+                <br/><br/>
+                This requires a dual strategy focused on the two largest emerging value pools: <strong>(1)</strong> launching a "no-compromise" Closed System to capture the mainstream demand for convenience, and <strong>(2)</strong> aggressively expanding into modern retail to unlock mass distribution. These offensive moves must be supported by defensive moats in data (SCV) and organizational agility (SBU).
+            </p>
+        </div>
+    </section>
+
+    <section id="strategic-imperative" class="slide">
+        <div class="slide-content">
+            <h2>Part 1: The Strategic Imperative</h2>
+            <p class="section-subtitle">Understanding the fundamental market dynamics that demand a strategic response.</p>
+            <div class="infographic-container">
+                <div class="text-content">
+                    <h3>The Scale of the Prize</h3>
+                    <p>The traditional cigarette market in Indonesia, while mature, represents an enormous pool of potential converts. Its value dwarfs the current e-vapour market, highlighting that our primary strategic goal is not just competing for existing vapers, but engineering a large-scale shift from combustibles.</p>
+                    <div class="insight-box">
+                        <strong>Governing Insight:</strong> Our Total Addressable Market is not the ~1.4M current vapers, but the ~65M+ smokers. Every strategic decision must be weighed against its potential to convert this massive user base.
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="marketSizeChart"></canvas>
+                    <p class="data-source">Source: Euromonitor International, Cigarettes in Indonesia, 2021; ECigIntelligence, 2020</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="unbundling" class="slide">
+        <div class="slide-content" style="text-align: center;">
+            <h2>Part 2: Deconstructing the Opportunity</h2>
+            <p class="governing-thought">The shift to alternatives is driven by the "unbundling" of the traditional cigarette. Consumers are choosing products that deliver specific benefits—like flavor or convenience—better than the all-in-one cigarette. This creates two distinct battlegrounds.</p>
+            
+            <div class="unbundling-diagram">
+                <div class="bundle-item">
+                    <div class="icon">🔥</div>
+                    <h4>The Traditional Cigarette (Bundled)</h4>
+                    <p>Nicotine, Ritual, Convenience, and Social Signal all in one product.</p>
+                </div>
+                <div class="arrow">&rarr;</div>
+                <div class="bundle-item">
+                    <div class="icon">💨</div>
+                    <h4>Battleground 1: Experience</h4>
+                    <p>Won by Open Systems delivering superior flavor, intensity, and ritual. FOOM's current strength.</p>
+                </div>
+                <div class="arrow">&rarr;</div>
+                 <div class="bundle-item">
+                    <div class="icon">⚡️</div>
+                    <h4>Battleground 2: Convenience</h4>
+                    <p>Won by Closed Systems offering ultimate ease-of-use and portability. The largest growth vector.</p>
+                </div>
+            </div>
+             <div class="insight-box" style="margin-top: 3rem; text-align: left;">
+                <strong>Key Strategic Challenge:</strong> The market is bifurcated. Our core strength is in the "Experience" battleground. The largest opportunity for growth and mainstream conversion lies in the "Convenience" battleground, which is currently underserved and vulnerable to competitors.
+            </div>
+        </div>
+    </section>
+
+    <section id="strategic-response-1" class="slide">
+        <div class="slide-content">
+            <h2>Part 3.1: The Product Mandate - Winning the Convenience War</h2>
+            <p class="section-subtitle">The Kadence report gives us a clear mandate. The market is defined by a central tension, and solving it is our primary innovation opportunity.</p>
+            
+            <div class="toggler-container">
+                <div class="toggle-switch">
+                    <div id="btn-open" class="toggle-btn active">Open Systems</div>
+                    <div id="btn-closed" class="toggle-btn">Closed Systems</div>
+                </div>
+                <div class="toggle-content active" id="content-open">
+                    <div class="content-card">
+                        <h3>The Enthusiast: "Maximum Experience"</h3>
+                        <ul>
+                            <li class="pros">Unmatched flavor intensity & variety</li>
+                            <li class="pros">Highly customizable (device, liquid, nicotine)</li>
+                            <li class="cons">Requires maintenance (refilling, cleaning)</li>
+                            <li class="cons">"Potential for leaks and inconsistency" (Direct quote)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="toggle-content" id="content-closed">
+                     <div class="content-card">
+                        <h3>The Pragmatist: "Ultimate Convenience"</h3>
+                        <ul>
+                            <li class="pros">Extremely easy to use (plug-and-play)</li>
+                            <li class="pros">Compact, sleek, and highly portable</li>
+                            <li class="cons">"Less intense flavor and nicotine hit" (Direct quote)</li>
+                            <li class="cons">Limited flavor and brand options</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-box" style="margin-top: 2rem;">
+                <strong>The Mandate (Kadence Report, July 2025):</strong> The data is unequivocal. The largest unmet need is a product that delivers the <strong>satisfaction of an open system</strong> with the <strong>convenience of a closed system</strong>. Our first strategic thrust must be to launch a "no-compromise" closed system that is engineered to solve these specific, user-identified trade-offs.
+            </div>
+        </div>
+    </section>
+
+    <section id="strategic-response-2" class="slide">
+        <div class="slide-content">
+            <h2>Part 3.2: The Channel Mandate - Path to the Mainstream</h2>
+            <p class="section-subtitle">A great product is useless if it's not accessible. To capture the mainstream, we must adopt the playbook of successful FMCG brands, as identified by NielsenIQ.</p>
+            <div class="infographic-container">
+                 <div class="text-content">
+                    <div class="insight-box" style="margin-top:0;">
+                        <strong>The Channel Barrier (Kadence & Euromonitor):</strong> Over 80% of tobacco is sold in mass-market channels. Our target mainstream converters find specialty vape stores "intimidating" (Kadence) and prefer to shop in neutral locations like minimarkets. This is our single biggest barrier to growth.
+                    </div>
+                 </div>
+                 <div class="chart-container">
+                    <canvas id="channelChart"></canvas>
+                    <p class="data-source">Source: Euromonitor International, Cigarettes in Indonesia, 2021</p>
+                </div>
+            </div>
+            <div class="nielsen-framework">
+                <div class="nielsen-card">
+                    <h3>1. Offering Relevancy</h3>
+                    <p><strong>NielsenIQ Insight:</strong> Winners provide offerings relevant to the channel and situation. <br/><br/><strong>Our Action:</strong> We will develop a "Starter Pack" SKU (1 device + 2 pods) specifically for modern retail, priced to compete with a few packs of cigarettes to drive trial.</p>
+                </div>
+                <div class="nielsen-card">
+                    <h3>2. Be Accessible</h3>
+                    <p><strong>NielsenIQ Insight:</strong> Winners ensure availability where consumers shop. <br/><br/><strong>Our Action:</strong> Our "Channel Blitz" initiative will focus on securing placement in high-traffic minimarkets (Alfamart, Indomaret), breaking our dependency on vape stores.</p>
+                </div>
+                <div class="nielsen-card">
+                    <h3>3. Reasonable Price</h3>
+                    <p><strong>NielsenIQ Insight:</strong> Winners manage price to appeal to Middle-Lower SES. <br/><br/><strong>Our Action:</strong> The Starter Pack will be priced under a key psychological threshold (e.g., Rp 100,000) to make the initial switch from cigarettes frictionless.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="strategic-response-3" class="slide">
+        <div class="slide-content">
+            <h2>Part 3.3: The Capability Mandate - Fortifying the Foundation</h2>
+            <p class="section-subtitle">Aggressive growth in new products and channels must be supported by a robust internal foundation to ensure our success is sustainable and defensible.</p>
+            <div class="initiative-layout">
+                <div class="initiative-column">
+                    <h4>The Rationale (Why?)</h4>
+                    <ul>
+                        <li><strong>Data is the New Oil:</strong> As we scale across channels, understanding the customer journey becomes exponentially more complex and valuable. Without a unified view, we cannot track loyalty, churn, or cross-channel behavior.</li>
+                        <li><strong>Speed is a Competitive Advantage:</strong> A traditional, siloed functional structure (SFU) is too slow for a fast-moving consumer technology market. We need agility to react to market changes and launch new products quickly.</li>
+                        <li><strong>Retention is Cheaper than Acquisition:</strong> A Single Customer View (SCV) is the foundation for building a powerful loyalty program that increases customer lifetime value and reduces churn.</li>
+                    </ul>
+                </div>
+                <div class="initiative-column">
+                    <h4>The Concept (How?)</h4>
+                    <ul>
+                        <li><strong>Single Customer View (SCV) Implementation:</strong> Invest in the technology and process to unify customer data from our POS (owned & partner stores), e-commerce, and future channels into a single, actionable profile.</li>
+                        <li><strong>Transition to Strategic Business Units (SBU):</strong> Reorganize the company around product categories (e.g., Open Systems, Closed Systems) with dedicated P&L ownership to foster accountability and speed.</li>
+                        <li><strong>Develop a Loyalty Program:</strong> Leverage the SCV to create a tiered loyalty program that rewards customers for purchases across all channels, building a sticky ecosystem.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="matrix-slide" class="slide">
+        <div class="slide-content">
+            <h2>Part 4: The Implementation Blueprint</h2>
+            <p class="governing-thought">The following plan maps our key strategic projects against their potential impact and the effort required, providing a clear, prioritized path to execution.</p>
+            <div class="matrix-container">
+                <div id="impact-label" class="axis-label">HIGH IMPACT &uarr;</div>
+                <div id="effort-label" class="axis-label">&rarr; HIGH EFFORT</div>
+                
+                <div id="q-wins" class="quadrant" style="border-top-left-radius: 12px;">
+                    <div class="quadrant-title">Quick Wins</div>
+                    <div class="project-dot" style="bottom: 60%; left: 25%;" title="Procure latest market data to validate assumptions and refine business cases.">1.1 Horizon Scan</div>
+                    <div class="project-dot" style="bottom: 30%; left: 45%;" title="Resolve legal/permit issues to immediately open new, high-potential retail locations.">1.4 Retail Footprint</div>
+                </div>
+                <div id="m-projects" class="quadrant" style="border-top-right-radius: 12px;">
+                    <div class="quadrant-title">Major Projects</div>
+                    <div class="project-dot" style="top: 20%; left: 20%;" title="Develop and launch a winning Closed System to capture the convenience segment.">1.2 Portfolio Expansion</div>
+                    <div class="project-dot" style="top: 45%; left: 50%;" title="Forge partnerships and a GTM strategy for modern retail (Alfamart, Indomaret).">1.3 Channel Blitz</div>
+                    <div class="project-dot" style="bottom: 15%; left: 35%;" title="Build a unified customer database to track behavior across all channels.">2.1 Single Customer View</div>
+                    <div class="project-dot" style="top: 25%; right: 10%;" title="Restructure into product-focused SBUs to increase speed and accountability.">3.1 Agile Org (SBU)</div>
+                </div>
+                <div id="q-fillins" class="quadrant" style="border-bottom-left-radius: 12px;"><div class="quadrant-title" style="color:#6c757d">Fill-ins</div></div>
+                <div id="q-reconsider" class="quadrant" style="border-bottom-right-radius: 12px;"><div class="quadrant-title" style="color:#6c757d">Reconsider</div></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chart for Market Landscape
+            const marketSizeCtx = document.getElementById('marketSizeChart').getContext('2d');
+            const marketSizeChart = new Chart(marketSizeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Traditional Cigarettes (2020)', 'E-Vapour Products (2020)'],
+                    datasets: [{
+                        label: 'Market Value (IDR Trillion)',
+                        data: [303, 3.8], // Rp 303.7 Trillion, $247M USD ~ Rp 3.8 Trillion
+                        backgroundColor: [
+                            'rgba(108, 117, 125, 0.6)',
+                            'rgba(13, 110, 253, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(108, 117, 125, 1)',
+                            'rgba(13, 110, 253, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            type: 'logarithmic',
+                            title: {
+                                display: true,
+                                text: 'Market Value in IDR Trillion (Logarithmic Scale)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'The Conversion Prize: Market Size Comparison',
+                            font: { size: 16, weight: '600' }
+                        },
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // Chart for Channel Frontier
+            const channelCtx = document.getElementById('channelChart').getContext('2d');
+            const channelChart = new Chart(channelCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Street Vendors (Kaki Lima)', 'Convenience Stores', 'Super/Hypermarkets', 'Specialty Vape Stores', 'Other'],
+                    datasets: [{
+                        label: 'Channel Share for Nicotine/Tobacco',
+                        data: [45, 35, 10, 5, 5], // Illustrative data based on reports
+                        backgroundColor: [
+                            '#6c757d',
+                            '#0d6efd',
+                            '#A8DADC',
+                            '#D4AF37',
+                            '#e9ecef'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Where Nicotine is Sold',
+                            font: { size: 16, weight: '600' }
+                        },
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+
+            // Toggler Logic
+            const btnOpen = document.getElementById('btn-open');
+            const btnClosed = document.getElementById('btn-closed');
+            const contentOpen = document.getElementById('content-open');
+            const contentClosed = document.getElementById('content-closed');
+
+            if (btnOpen && btnClosed && contentOpen && contentClosed) {
+                btnOpen.addEventListener('click', () => {
+                    btnOpen.classList.add('active');
+                    btnClosed.classList.remove('active');
+                    contentOpen.classList.add('active');
+                    contentClosed.classList.remove('active');
+                });
+
+                btnClosed.addEventListener('click', () => {
+                    btnClosed.classList.add('active');
+                    btnOpen.classList.remove('active');
+                    contentClosed.classList.add('active');
+                    contentOpen.classList.remove('active');
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
